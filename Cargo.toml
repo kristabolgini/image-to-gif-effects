@@ -5,4 +5,5 @@ authors = ["Logan Saso <logan.saso2016@gmail.com>"]
 
 [dependencies]
 image = "*"
-clap = "~2.27.0"
+clap = "2.29.0"
+gif = "0.9.2"
