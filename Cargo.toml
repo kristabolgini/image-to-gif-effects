@@ -1,0 +1,8 @@
+[package]
+name = "image-to-gif-effects"
+version = "0.1.0"
+authors = ["Logan Saso <logan.saso2016@gmail.com>"]
+
+[dependencies]
+image = "*"
+clap = "~2.27.0"
