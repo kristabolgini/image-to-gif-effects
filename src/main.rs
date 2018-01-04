@@ -1,10 +1,18 @@
 // TODO: Implement everything
 // TODO: Rethink "manipulation" and "manipulation method"
-
+extern crate clap;
+extern crate gif;
 extern crate image;
 
-extern crate clap;
 use clap::{Arg, App};
+
+// use std::fs::File;
+use std::process::exit;
+
+use image::{GenericImage, DynamicImage};
+
+mod animations;
+use animations::{zoom, shake};
 
 fn main() {
     let matches = App::new("Image to Gif")
@@ -33,17 +41,27 @@ fn main() {
                               .takes_value(true)
                               .help("Manipulation methods are: shake, zoom, rotate"))
                       .get_matches();
-                    
-    if let Some(image) = matches.value_of("input") {
+
+    let source_image: DynamicImage;
+    if let Some(file_location) = matches.value_of("input") {
         // Try and load source image with location in variable 'image'
-        println!("Using {} as source image", image)
+        source_image = match image::open(file_location) {
+            Ok(result) => result,
+            Err(_) => {
+                println!("Image load failed, does the file exist?");
+                exit(1);
+            }
+        };
+        println!("Using {} as source image with dimensions {:?}", file_location, source_image.dimensions());
     } else {
         println!("You must include a source image.");
-        ::std::process::exit(1)
+        exit(1)
     }
 
+    let output_path: String;
     if let Some(output) = matches.value_of("output") {
         println!("Writing file to {}", output);
+        output_path = output.to_string();
         // Save output location
     } else {
         println!("Writing file to output.gif")
@@ -52,9 +70,11 @@ fn main() {
     match matches.value_of("method") {
         Some("zoom") => {
             println!("Zooming on out of here!");
+            zoom::process(source_image, output_path);
         },
         Some("shake") => {
-            println!("Rocking the boat.")
+            println!("Rocking the boat.");
+            shake::process(source_image, output_path);
         },
         Some("rotate") => {
             println!("You spin me right round baby right round.")
