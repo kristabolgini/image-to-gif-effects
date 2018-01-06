@@ -64,17 +64,19 @@ fn main() {
         output_path = output.to_string();
         // Save output location
     } else {
-        println!("Writing file to output.gif")
+        output_path = String::from("./output.gif");
+        println!("Writing file to output.gif");
     }
 
     match matches.value_of("method") {
         Some("zoom") => {
             println!("Zooming on out of here!");
             zoom::process(source_image, output_path);
+            println!("Zooming in the here dud!");
         },
         Some("shake") => {
-            println!("Rocking the boat.");
             shake::process(source_image, output_path);
+            println!("Rocking the boat.");
         },
         Some("rotate") => {
             println!("You spin me right round baby right round.")
@@ -82,5 +84,7 @@ fn main() {
         Some(m) => println!("{} is not a supported method. Run with --methods flag to list optional methods.", m),
         None => println!("You must include a maniuplation method.")
     }
+
+    return;
 
 }
